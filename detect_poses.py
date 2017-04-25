@@ -7,12 +7,11 @@ import time
 
 pickle_file = open('train_model.pickle','rb')
 train_model = pickle.load(pickle_file)['log']
-cap = cv2.VideoCapture('cc.mp4')
+cap = cv2.VideoCapture('cc.mp4')            #filename of your video input. (0) for webcam
 template = cv2.imread('template.png',0)
 fgbg = cv2.BackgroundSubtractorMOG()
 face_cascade = cv2.CascadeClassifier('haarcascade.xml')
-# training_file = open('left90right150.txt','w')
-# out = cv2.VideoWriter('output4.avi',-1, 24, (640,480))
+# out = cv2.VideoWriter('output4.avi',-1, 24, (640,480))  if you want to save the output uncomment.
 poses = dict()
 poses[0] = "Both hands up"
 poses[1] = "Both hands straight at 90 degree with face"
@@ -25,7 +24,7 @@ poses[7] = "Left hand at 90 and Right at 60"
 poses[8] = "Left hand at 150 and Right at 60"
 tem = 0
 theta = []
-while(cap.isOpened()):
+while(cap.isOpened()):                  #True for webcam
     ret, frame = cap.read()
     if ret == True:
         #################  BackGround Subtraction ###############
@@ -65,7 +64,7 @@ while(cap.isOpened()):
 
         ####### Template matching Torso Detection #################    
             result = {}
-            for i in range(150,260,20):
+            for i in range(150,260,20):                     #range of scales of template
                 template = cv2.resize(template,(i/2,i),interpolation=cv2.INTER_AREA)
                 res = cv2.matchTemplate(cropped_foreground,template,cv2.TM_CCORR_NORMED)
                 score = np.amax(res)
@@ -79,7 +78,6 @@ while(cap.isOpened()):
             top_left = max_loc
             top_left = (top_left[0]+x_,top_left[1]+y_)
             bottom_right = (top_left[0] + m, top_left[1] + n)
-            # cv2.rectangle(temp,top_left, bottom_right, 255, 2)
             cv2.rectangle(temp,(top_left[0]+size_/6,top_left[1]),(top_left[0]+size_/3,top_left[1]+size_/3),255,2)
             cv2.rectangle(temp,(top_left[0],top_left[1]+size_/3),bottom_right,255,2)
             cv2.circle(temp,(top_left[0]+m/2,top_left[1]+n/2),3,(0,0,255),-1)
@@ -101,12 +99,11 @@ while(cap.isOpened()):
                     green_mean = np.mean(g)
                     red_mean = np.mean(r)
                     skin_color = np.uint8([[[blue_mean,green_mean,red_mean]]])
-                    hsv_skin = cv2.cvtColor(skin_color,cv2.COLOR_BGR2HSV)
+                    hsv_skin = cv2.cvtColor(skin_color,cv2.COLOR_BGR2HSV)           #mean skin colour in hsv
                 masked_image[y-y_:y-y_+h,x-x_:x-x_+w] = 255
                 masked_image[:,top_left[0]-x_:bottom_right[0]-x_] = 255
                 masked_hsv = cv2.cvtColor(masked_image,cv2.COLOR_BGR2HSV)
                 mask_skin = cv2.inRange(masked_hsv,np.array([.25*hsv_skin[0][0][0],.65*hsv_skin[0][0][1],.85*hsv_skin[0][0][2]]).astype(np.float32),np.array([2*hsv_skin[0][0][0],255,255]).astype(np.float32))
-                # mask_skin = cv2.inRange(masked_hsv,np.array([0,16,70]),np.array([9,255,255]))
                 mask_skin = cv2.dilate(mask_skin,kernel,iterations=5)
                 mask_skin = cv2.erode(mask_skin,kernel,iterations=2)
                 ms = cv2.bitwise_and(masked_image,masked_image,mask = mask_skin)
@@ -167,11 +164,9 @@ while(cap.isOpened()):
                 cv2.putText(temp,"right hand angle",(300,20),font,1,(255,255,255),2)
                 cv2.putText(temp,str(right_theta),(10,50), font, 1,(255,255,255),2)
                 cv2.putText(temp,str(left_theta),(300,50), font, 1,(255,255,255),2)
-                # theta.append((right_theta,left_theta))
                 tem += 1
                 if tem%24 == 0:
                     print poses[train_model.predict([[1,right_theta,left_theta,right_theta**2,left_theta**2]])[0]]
-                    # cv2.putText(temp,"Pose No. 5",(80,400),font,1,(255,255,255),1)
                 
                 # print (end-start)/
         cv2.imshow('frame4',temp)
