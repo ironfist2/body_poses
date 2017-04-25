@@ -1,4 +1,5 @@
 # body_poses
+This program takes a video input from webcam or video file predict poses using torso, face and hand detection.
 This program helps to identify 9 different human body poses  with a frame rate of upto 15 frames per second on a i-5 4110 CPU.
 It succesfully predict 9 different poses with an acuracy of more then 80%.
 Required softwares for the program to run:
