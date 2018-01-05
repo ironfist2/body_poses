@@ -22,6 +22,7 @@ print log.predict([[1,90,90,8100,8100]])
 p = open('train_model.pickle','wb')
 t = {'log':log}
 pickle.dump(t,p)
+p.close()
 
 # training_file = open('training.txt','r')
 # training_file2 = open('training2.txt','w')
