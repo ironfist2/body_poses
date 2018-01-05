@@ -9,5 +9,5 @@ Required softwares for the program to run:
 4. Pickle
 
 Place all the files in a folder.
-After installing these libraries/sofwares run body_poses.py
+After installing these libraries/sofwares run detect_poses.py
 Make appropiate changes in VideoCapture function (which type of input you want '0' for webcam and 'filename' for  recorded video feed).
