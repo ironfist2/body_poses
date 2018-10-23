@@ -180,3 +180,4 @@ while(cap.isOpened()):                  #True for webcam
 cap.release()
 # out.release()
 cv2.destroyAllWindows()
+#end
