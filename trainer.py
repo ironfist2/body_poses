@@ -23,7 +23,7 @@ p = open('train_model.pickle','wb')
 t = {'log':log}
 pickle.dump(t,p)
 p.close()
-
+#end
 # training_file = open('training.txt','r')
 # training_file2 = open('training2.txt','w')
 # for l in training_file:
