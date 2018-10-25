@@ -5,6 +5,7 @@ import pickle
 from sklearn import tree
 import time
 
+#load trained model
 pickle_file = open('train_model.pickle','rb')
 train_model = pickle.load(pickle_file)['log']
 cap = cv2.VideoCapture('cc.mp4')            #filename of your video input. (0) for webcam
