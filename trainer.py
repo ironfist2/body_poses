@@ -21,6 +21,7 @@ log.fit(x,y)
 print log.predict([[1,90,90,8100,8100]])
 p = open('train_model.pickle','wb')
 t = {'log':log}
+#save trained model
 pickle.dump(t,p)
 p.close()
 
