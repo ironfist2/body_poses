@@ -3,6 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import tree
 import pickle
 f = open('training2.txt','r')
+ff = open('log.txt','w')
 x = []
 y = []
 for l in f:
@@ -19,6 +20,7 @@ for l in f:
 log = tree.DecisionTreeClassifier()
 log.fit(x,y) 
 print log.predict([[1,90,90,8100,8100]])
+ff.write(str(log.predict([[1,90,90,8100,8100]]))+'\n')
 p = open('train_model.pickle','wb')
 t = {'log':log}
 pickle.dump(t,p)
